@@ -9,21 +9,23 @@ using namespace std;
 
 class Solution{
 public:
-
-    vector<pair<int,int>> in;
-    void Toh(int N, int st, int gl ,int mid){
-        if(N==0) return;
-        Toh(N-1,st,mid,gl);
-        in.push_back({st,gl});
-        Toh(N-1,mid,gl,st);
+    vector<pair<int,int>> vv;
+    void TOH(int N, int st,int mid,int gl){
+        if(N==1){
+            vv.push_back({st,gl});
+            return;
+        }
+        TOH(N-1,st,gl,mid);
+        vv.push_back({st,gl});
+        TOH(N-1,mid,st,gl);
     }
     vector<int> shiftPile(int N, int n){
         // code here
-        Toh(N,1,3,2);
-        vector<int> ai;
-        ai.push_back(in[n-1].first);
-        ai.push_back(in[n-1].second);
-        return ai;
+        TOH(N,1,2,3);
+        vector<int> vvv;
+        vvv.push_back(vv[n-1].first);
+        vvv.push_back(vv[n-1].second);
+        return vvv;
     }
 };
 

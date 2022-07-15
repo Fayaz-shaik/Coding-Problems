@@ -1,31 +1,34 @@
 class Solution {
 public:
-    bool cyc(int k , vector<int> adj[],vector<int> &vis){
-        if(vis[k]==1){
-            return true;
-        }
-        if(vis[k]==0){
-            vis[k]=1;
-            for(auto it : adj[k]){
-                if(cyc(it,adj,vis))
-                    return true;
-            }
-        }
-        vis[k]=2;
-        return false;
-    }
     bool canFinish(int num, vector<vector<int>>& pre) {
         vector<int> adj[num];
-        bool ans = true;
-        for(auto i :pre){
-            adj[i[1]].push_back(i[0]);            
+        for(auto it : pre){
+            adj[it[1]].push_back(it[0]);
         }
-        vector<int> vis(num,0);
-        for(int k=0;k<num;k++){
-            if(cyc(k,adj,vis)==true){
-                ans = false ;
+        queue<int> q;
+        vector<int> ind(num,0);
+        for(int  i =0;i<num;i++){
+            for(auto it : adj[i]){
+                ind[it]++;
             }
         }
-        return ans;
+        for(int i =0;i<num;i++){
+            if(ind[i]==0){
+                q.push(i);
+            }
+        }
+        int cnt =0;
+        while(q.empty()==false){
+            int n = q.front();
+            q.pop();
+            cnt++;
+            for(auto it : adj[n]){
+                ind[it]--;
+                if(ind[it]==0){
+                    q.push(it);
+                }
+            }
+        }
+        return (cnt == num);
     }
 };
